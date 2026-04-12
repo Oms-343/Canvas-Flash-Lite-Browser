@@ -1,13 +1,13 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { AddressBar } from './AddressBar';
-import { Breadcrumb, GroundingSource, Tab } from '../types';
+import React, { useRef, useCallback, useState, useEffect } from "react";
+import { AddressBar } from "./AddressBar";
+import { Breadcrumb, GroundingSource, Tab } from "../types";
 
 interface BrowserShellProps {
   children: React.ReactNode;
   breadcrumb: Breadcrumb;
   isLoading: boolean;
   loadingMessage: string;
-  onNavigate: (type: 'create' | 'edit', prompt: string) => void;
+  onNavigate: (type: "create" | "edit", prompt: string) => void;
   onBack: () => void;
   onForward: () => void;
   onRefresh: () => void;
@@ -24,6 +24,9 @@ interface BrowserShellProps {
   onSwitchTab: (index: number) => void;
   isGrounded: boolean;
   onToggleGrounding: () => void;
+  isEditingCode: boolean;
+  onToggleEditor: () => void;
+  onExportHtml: () => void;
 }
 
 export const BrowserShell: React.FC<BrowserShellProps> = ({
@@ -48,14 +51,17 @@ export const BrowserShell: React.FC<BrowserShellProps> = ({
   onSwitchTab,
   isGrounded,
   onToggleGrounding,
+  isEditingCode,
+  onToggleEditor,
+  onExportHtml,
 }) => {
   const shellRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const handleChange = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener('fullscreenchange', handleChange);
-    return () => document.removeEventListener('fullscreenchange', handleChange);
+    document.addEventListener("fullscreenchange", handleChange);
+    return () => document.removeEventListener("fullscreenchange", handleChange);
   }, []);
 
   const handleFullscreen = useCallback(() => {
@@ -67,9 +73,9 @@ export const BrowserShell: React.FC<BrowserShellProps> = ({
   }, []);
 
   const getTabTitle = (tab: Tab, index: number) => {
-    if (tab.loading) return 'Generating...';
+    if (tab.loading) return "Generating...";
     const bc = tab.breadcrumb;
-    return bc.page || bc.sitename || 'New Tab';
+    return bc.page || bc.sitename || "New Tab";
   };
 
   return (
@@ -80,22 +86,22 @@ export const BrowserShell: React.FC<BrowserShellProps> = ({
           {tabs.map((tab, index) => (
             <div
               key={tab.id}
-              className={`tab ${index === activeTabIndex ? 'active-tab' : ''}`}
+              className={`tab ${index === activeTabIndex ? "active-tab" : ""}`}
               onClick={() => onSwitchTab(index)}
               role="tab"
               tabIndex={0}
               aria-selected={index === activeTabIndex}
-              onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
                   onSwitchTab(index);
                 }
               }}
             >
-              {tab.loading && <div className="tab-spinner" aria-hidden="true" />}
-              <span className="tab-title">
-                {getTabTitle(tab, index)}
-              </span>
+              {tab.loading && (
+                <div className="tab-spinner" aria-hidden="true" />
+              )}
+              <span className="tab-title">{getTabTitle(tab, index)}</span>
               <button
                 className="tab-close"
                 onClick={(e) => {
@@ -109,13 +115,25 @@ export const BrowserShell: React.FC<BrowserShellProps> = ({
               </button>
             </div>
           ))}
-          <button className="tab-new" onClick={onNewTab} title="New Tab" aria-label="New Tab">
+          <button
+            className="tab-new"
+            onClick={onNewTab}
+            title="New Tab"
+            aria-label="New Tab"
+          >
             <span>+</span>
           </button>
         </div>
         {/* Fullscreen button — right side of tab bar */}
-        <button className="tab-bar-btn" onClick={handleFullscreen} title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'} aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}>
-          <span className="material-symbols-outlined">{isFullscreen ? 'close_fullscreen' : 'fullscreen'}</span>
+        <button
+          className="tab-bar-btn"
+          onClick={handleFullscreen}
+          title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        >
+          <span className="material-symbols-outlined">
+            {isFullscreen ? "close_fullscreen" : "fullscreen"}
+          </span>
         </button>
       </div>
 
@@ -134,12 +152,13 @@ export const BrowserShell: React.FC<BrowserShellProps> = ({
         canGoForward={canGoForward}
         isGrounded={isGrounded}
         onToggleGrounding={onToggleGrounding}
+        isEditingCode={isEditingCode}
+        onToggleEditor={onToggleEditor}
+        onExportHtml={onExportHtml}
       />
 
       {/* Viewport */}
-      <div className="browser-viewport">
-        {children}
-      </div>
+      <div className="browser-viewport">{children}</div>
 
       {/* Grounding Attribution Row */}
       {(groundingSources.length > 0 || searchEntryPointHtml) && (

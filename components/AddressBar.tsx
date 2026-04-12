@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Breadcrumb } from '../types';
-import { parseBreadcrumb, breadcrumbToDisplay } from '../utils/urlHelpers';
+import React, { useState, useEffect, useRef } from "react";
+import { Breadcrumb } from "../types";
+import { parseBreadcrumb, breadcrumbToDisplay } from "../utils/urlHelpers";
 
 interface AddressBarProps {
   breadcrumb: Breadcrumb;
   isLoading: boolean;
   loadingMessage: string;
-  onNavigate: (type: 'create' | 'edit', prompt: string) => void;
+  onNavigate: (type: "create" | "edit", prompt: string) => void;
   onBack: () => void;
   onForward: () => void;
   onRefresh: () => void;
@@ -16,6 +16,9 @@ interface AddressBarProps {
   canGoForward: boolean;
   isGrounded: boolean;
   onToggleGrounding: () => void;
+  isEditingCode: boolean;
+  onToggleEditor: () => void;
+  onExportHtml: () => void;
 }
 
 export const AddressBar: React.FC<AddressBarProps> = ({
@@ -32,6 +35,9 @@ export const AddressBar: React.FC<AddressBarProps> = ({
   canGoForward,
   isGrounded,
   onToggleGrounding,
+  isEditingCode,
+  onToggleEditor,
+  onExportHtml,
 }) => {
   const displayText = breadcrumbToDisplay(breadcrumb);
   const [inputVal, setInputVal] = useState(displayText);
@@ -66,16 +72,16 @@ export const AddressBar: React.FC<AddressBarProps> = ({
       }
     };
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMenuOpen(false);
+      if (e.key === "Escape") setMenuOpen(false);
     };
     const handleBlur = () => setMenuOpen(false);
-    document.addEventListener('mousedown', handleClick);
-    document.addEventListener('keydown', handleEscape);
-    window.addEventListener('blur', handleBlur);
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleEscape);
+    window.addEventListener("blur", handleBlur);
     return () => {
-      document.removeEventListener('mousedown', handleClick);
-      document.removeEventListener('keydown', handleEscape);
-      window.removeEventListener('blur', handleBlur);
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleEscape);
+      window.removeEventListener("blur", handleBlur);
     };
   }, [menuOpen]);
 
@@ -87,11 +93,11 @@ export const AddressBar: React.FC<AddressBarProps> = ({
     const edited = parseBreadcrumb(trimmed);
 
     if (!edited.page && breadcrumb.page) {
-      onNavigate('create', edited.sitename);
+      onNavigate("create", edited.sitename);
     } else if (edited.sitename !== breadcrumb.sitename) {
-      onNavigate('create', trimmed);
+      onNavigate("create", trimmed);
     } else if (edited.page !== breadcrumb.page) {
-      onNavigate('edit', edited.page);
+      onNavigate("edit", edited.page);
     } else {
       onRefresh();
     }
@@ -102,7 +108,7 @@ export const AddressBar: React.FC<AddressBarProps> = ({
 
   const handleDomainClick = () => {
     if (breadcrumb.sitename && breadcrumb.page) {
-      onNavigate('create', breadcrumb.sitename);
+      onNavigate("create", breadcrumb.sitename);
     }
   };
 
@@ -112,7 +118,7 @@ export const AddressBar: React.FC<AddressBarProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       setInputVal(displayText);
       setHasEdited(false);
       inputRef.current?.blur();
@@ -122,7 +128,7 @@ export const AddressBar: React.FC<AddressBarProps> = ({
   const handleFocus = () => {
     setIsFocused(true);
     if (!hasEdited) {
-      setInputVal(displayText.replace(/ › /g, '.'));
+      setInputVal(displayText.replace(/ › /g, "."));
     }
   };
 
@@ -133,9 +139,12 @@ export const AddressBar: React.FC<AddressBarProps> = ({
     }
   };
 
-  const displayValue = isLoading && !isFocused && !breadcrumb.page
-    ? 'Generating...'
-    : isFocused ? inputVal : inputVal.replace(/\./g, ' › ');
+  const displayValue =
+    isLoading && !isFocused && !breadcrumb.page
+      ? "Generating..."
+      : isFocused
+        ? inputVal
+        : inputVal.replace(/\./g, " › ");
 
   return (
     <div className="address-bar">
@@ -144,7 +153,7 @@ export const AddressBar: React.FC<AddressBarProps> = ({
         <button
           onClick={onBack}
           disabled={!canGoBack}
-          className={`nav-btn ${!canGoBack ? 'disabled' : ''}`}
+          className={`nav-btn ${!canGoBack ? "disabled" : ""}`}
           title="Go back"
           aria-label="Go back"
         >
@@ -153,7 +162,7 @@ export const AddressBar: React.FC<AddressBarProps> = ({
         <button
           onClick={onForward}
           disabled={!canGoForward}
-          className={`nav-btn ${!canGoForward ? 'disabled' : ''}`}
+          className={`nav-btn ${!canGoForward ? "disabled" : ""}`}
           title="Go forward"
           aria-label="Go forward"
         >
@@ -162,14 +171,19 @@ export const AddressBar: React.FC<AddressBarProps> = ({
         <button
           onClick={isLoading ? onStop : onRefresh}
           className="nav-btn"
-          title={isLoading ? 'Stop loading' : 'Refresh'}
-          aria-label={isLoading ? 'Stop loading' : 'Refresh'}
+          title={isLoading ? "Stop loading" : "Refresh"}
+          aria-label={isLoading ? "Stop loading" : "Refresh"}
         >
           <span className="material-symbols-outlined">
-            {isLoading ? 'close' : 'refresh'}
+            {isLoading ? "close" : "refresh"}
           </span>
         </button>
-        <button onClick={onHome} className="nav-btn" title="Home" aria-label="Home">
+        <button
+          onClick={onHome}
+          className="nav-btn"
+          title="Home"
+          aria-label="Home"
+        >
           <span className="material-symbols-outlined">home</span>
         </button>
       </div>
@@ -183,14 +197,14 @@ export const AddressBar: React.FC<AddressBarProps> = ({
             <input
               ref={inputRef}
               type="text"
-                autoComplete="off"
+              autoComplete="off"
               value={displayValue}
               onChange={handleChange}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               onKeyDown={handleKeyDown}
-                className="omnibar-input"
-                aria-label="Address bar — enter a URL or prompt"
+              className="omnibar-input"
+              aria-label="Address bar — enter a URL or prompt"
             />
           )}
         </div>
@@ -198,21 +212,31 @@ export const AddressBar: React.FC<AddressBarProps> = ({
 
       {/* 3-dots Menu */}
       <div className="menu-container" ref={menuRef}>
-        <button className="nav-btn" onClick={() => setMenuOpen(!menuOpen)} title="More options" aria-label="More options" aria-haspopup="true" aria-expanded={menuOpen}>
+        <button
+          className="nav-btn"
+          onClick={() => setMenuOpen(!menuOpen)}
+          title="More options"
+          aria-label="More options"
+          aria-haspopup="true"
+          aria-expanded={menuOpen}
+        >
           <span className="material-symbols-outlined">more_vert</span>
         </button>
         {menuOpen && (
           <div className="dropdown-menu" role="menu">
-            <label className="dropdown-menu-item" onClick={(e) => e.stopPropagation()}>
+            {/* <label
+              className="dropdown-menu-item"
+              onClick={(e) => e.stopPropagation()}
+            >
               <span>Search Grounding</span>
               <div
-                className={`toggle-track ${isGrounded ? 'active' : ''}`}
+                className={`toggle-track ${isGrounded ? "active" : ""}`}
                 onClick={onToggleGrounding}
                 role="switch"
                 aria-checked={isGrounded}
                 tabIndex={0}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     onToggleGrounding();
                   }
@@ -220,6 +244,34 @@ export const AddressBar: React.FC<AddressBarProps> = ({
               >
                 <div className="toggle-thumb" />
               </div>
+            </label> */}
+
+            <div className="dropdown-divider" />
+
+            <label
+              className="dropdown-menu-item"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleEditor();
+                setMenuOpen(false);
+              }}
+            >
+              <span>{isEditingCode ? "Show Preview" : "Edit Code"}</span>
+              <span className="material-symbols-outlined">
+                {isEditingCode ? "visibility" : "code"}
+              </span>
+            </label>
+
+            <label
+              className="dropdown-menu-item"
+              onClick={(e) => {
+                e.stopPropagation();
+                onExportHtml();
+                setMenuOpen(false);
+              }}
+            >
+              <span>Export HTML</span>
+              <span className="material-symbols-outlined">download</span>
             </label>
           </div>
         )}

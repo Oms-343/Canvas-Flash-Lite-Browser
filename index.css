@@ -12,7 +12,7 @@
   flex-direction: column;
   padding: 20px 24px 12px;
   box-sizing: border-box;
-  font-family: 'Google Sans Flex', 'Google Sans', sans-serif;
+  font-family: "Google Sans Flex", "Google Sans", sans-serif;
   overflow: hidden;
 }
 
@@ -126,8 +126,12 @@
   color: #9aa0a6;
 }
 
-.token-in { color: #8ab4f8; }
-.token-out { color: #81c995; }
+.token-in {
+  color: #8ab4f8;
+}
+.token-out {
+  color: #81c995;
+}
 
 .token-icon {
   font-size: 24px !important;
@@ -156,7 +160,9 @@
   color: #9aa0a6;
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
   padding: 0;
   margin-right: 4px;
   flex-shrink: 0;
@@ -206,9 +212,70 @@
   background: #35363a;
 }
 
+.dropdown-divider {
+  height: 1px;
+  background: #3c4043;
+  margin: 4px 0;
+}
+
+/* Code Editor */
+.code-editor-container {
+  width: 100%;
+  height: 100%;
+  background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-editor-textarea {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: #d4d4d4;
+  font-family: "Google Sans Mono", "JetBrains Mono", "Fira Code", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 20px;
+  border: none;
+  outline: none;
+  resize: none;
+  white-space: pre;
+  overflow: auto;
+}
+
+.code-editor-textarea::placeholder {
+  color: #555;
+}
+
+/* Scrollbar for editor */
+.code-editor-textarea::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.code-editor-textarea::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.code-editor-textarea::-webkit-scrollbar-thumb {
+  background: #333;
+  border: 3px solid #1e1e1e;
+  border-radius: 6px;
+}
+
+.code-editor-textarea::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Focus Indicators (keyboard accessibility) */
@@ -233,11 +300,9 @@ button:focus-visible,
   outline: none; /* handled by .newtab-input-row:focus-within */
 }
 
-
-
 /* ==========================================
-   BROWSER SHELL
-   ========================================== */
+     BROWSER SHELL
+     ========================================== */
 
 .browser-shell {
   display: flex;
@@ -301,7 +366,10 @@ button:focus-visible,
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   flex: 1;
   min-width: 0;
 }
@@ -326,7 +394,9 @@ button:focus-visible,
   padding: 0;
   flex-shrink: 0;
   opacity: 0;
-  transition: opacity 0.1s ease, background 0.1s ease;
+  transition:
+    opacity 0.1s ease,
+    background 0.1s ease;
   user-select: none;
 }
 
@@ -351,7 +421,9 @@ button:focus-visible,
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .tab-new {
@@ -440,9 +512,14 @@ button:focus-visible,
   border-radius: 20px;
   color: #e8eaed;
   font-size: 14px;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   outline: none;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
   box-sizing: border-box;
 }
 
@@ -491,7 +568,10 @@ button:focus-visible,
   color: #9aa0a6;
   border-radius: 0 6px 0 0;
   z-index: 50;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 /* Grounding Attribution Row */
@@ -510,7 +590,10 @@ button:focus-visible,
   align-items: center;
   border-radius: 8px;
   display: flex;
-  font-family: Google Sans, Roboto, sans-serif;
+  font-family:
+    Google Sans,
+    Roboto,
+    sans-serif;
   font-size: 14px;
   line-height: 20px;
   padding: 8px 0 8px 12px;
@@ -544,11 +627,16 @@ button:focus-visible,
   border-radius: 16px;
   color: #ffffff;
   font-size: 14px;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
   flex-shrink: 0;
 }
 
@@ -575,8 +663,8 @@ button:focus-visible,
 }
 
 /* ==========================================
-   NEW TAB PAGE
-   ========================================== */
+     NEW TAB PAGE
+     ========================================== */
 
 .newtab-page {
   width: 100%;
@@ -608,7 +696,7 @@ button:focus-visible,
   font-weight: 500;
   color: #ffffff;
   margin: 0 0 6px;
-  font-family: 'Google Sans Flex', 'Google Sans', sans-serif;
+  font-family: "Google Sans Flex", "Google Sans", sans-serif;
 }
 
 .newtab-brand-subtitle {
@@ -628,7 +716,9 @@ button:focus-visible,
   background: #1e1f23;
   border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 999px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .newtab-input-row:focus-within {
@@ -665,7 +755,10 @@ button:focus-visible,
   border-radius: 999px;
   color: #ffffff;
   font-size: 16px;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   outline: none;
   box-sizing: border-box;
 }
@@ -690,7 +783,7 @@ button:focus-visible,
   border-radius: 8px;
   color: #ffffff;
   font-size: 14px;
-  font-family: 'Google Sans Flex', 'Google Sans', sans-serif;
+  font-family: "Google Sans Flex", "Google Sans", sans-serif;
   cursor: pointer;
   transition: background 0.15s ease;
   user-select: none;
@@ -701,8 +794,8 @@ button:focus-visible,
 }
 
 /* ==========================================
-   SCROLLBAR (Dark)
-   ========================================== */
+     SCROLLBAR (Dark)
+     ========================================== */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -726,7 +819,7 @@ button:focus-visible,
   padding: 18px 0 4px;
   flex-shrink: 0;
   margin-top: auto;
-  font-family: 'Google Sans Mono', monospace;
+  font-family: "Google Sans Mono", monospace;
 }
 
 .footer-link {
@@ -740,8 +833,8 @@ button:focus-visible,
 }
 
 /* ==========================================
-   MOBILE (Chrome-style)
-   ========================================== */
+     MOBILE (Chrome-style)
+     ========================================== */
 
 @media (max-width: 768px) {
   /* -- OUTER FRAME: full-screen, no decoration -- */

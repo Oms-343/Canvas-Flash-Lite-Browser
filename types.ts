@@ -45,6 +45,7 @@ export interface Tab {
   groundingSources: GroundingSource[];
   searchEntryPointHtml: string;
   navigationId: number;
+  isEditingCode: boolean;
 }
 
 let nextTabId = 0;
@@ -55,12 +56,13 @@ export function createTab(): Tab {
     history: [],
     currentIndex: -1,
     loading: false,
-    loadingMessage: '',
-    generatedContent: '',
-    breadcrumb: { sitename: '', page: '' },
+    loadingMessage: "",
+    generatedContent: "",
+    breadcrumb: { sitename: "", page: "" },
     tokenCount: null,
     groundingSources: [],
-    searchEntryPointHtml: '',
+    searchEntryPointHtml: "",
     navigationId: 0,
+    isEditingCode: false,
   };
 }
